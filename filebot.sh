@@ -14,4 +14,4 @@ else
     source "$dir_name/filebot.cfg"
 fi
 
-filebot -script fn:amc -extract --log-file /config/amc.log -non-strict /input --output /output --def "seriesFormat=$movieFormat" "movieFormat=$tvFormat" "musicFormat=$musicFormat" $filebot_args
+filebot -script fn:amc -extract --log-file /config/amc.log -non-strict /input --output /output --def "seriesFormat=$tvFormat" "movieFormat=$movieFormat" "musicFormat=$musicFormat" $filebot_args

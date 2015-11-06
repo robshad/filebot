@@ -19,22 +19,31 @@ fi
 EOL
 echo "Wrote /script/filebot-service.sh"
 
-wget -v -O /config/filebot.cfg https://raw.githubusercontent.com/robshad/lftp-sync/master/lftp-sync-defaults.cfg
-echo "Wrote /config/filebot.cfg"
+wget -v -O /config/filebot.sh https://raw.githubusercontent.com/robshad/filebot/master/filebot.sh
+echo "Wrote /config/filebot.sh"
 
-wget -O /tmp/filebot.deb wget -O filebot-amd64.deb 'http://filebot.sourceforge.net/download.php?type=deb&arch=amd64'
+wget -O /script/filebot.deb 'https://www.filebot.net/download.php?mode=s&type=deb&arch=amd64'
 echo "Downloaded filebot.deb"
 
-dpkg -i /tmp/filebot.deb
+sudo dpkg -i /script/filebot.deb
 echo "Installed filebot"
 
-rm /tmp/filebot.deb
+if [! -f /config/filebot.cfg ]
+then
+  echo "Config exists"
+else
+  wget -v -O /config/filebot.cfg https://raw.githubusercontent.com/robshad/filebot/master/filebot.cfg
+  echo "Wrote /config/filebot.cfg"
+fi
+
+rm /script/filebot.deb
 echo "Removed filebot"
 
 chown -R abc:abc /config
 chown -R abc:abc /script
 chmod -v +x /config/filebot.sh
-chmod -v +x /config/filebot-config.cfg
+chmod -v +x /config/filebot.cfg
 chmod -v +x /script/filebot-service.sh
 
 crontab -l | { cat; echo "$(printenv CRON) /script/filebot-service.sh"; } | crontab -
+echo "Added cron entry"
